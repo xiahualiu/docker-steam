@@ -1,0 +1,26 @@
+services:
+  valheim-server:
+    build:
+      context: .
+      args:
+        STEAM_USER: "steam"
+        STEAM_HOME: "/home/steam"
+        STEAM_USER_UID: "1000"
+        STEAM_USER_GID: "1000"
+        STEAMCMD_DIR: "/home/steam/steamcmd"
+        STEAM_APP_DIR: "/home/steam/game"
+        STEAM_APP_SAVE_DIR: "/home/steam/.config/unity3d/IronGate/Valheim"
+
+    image: valheim-server:latest
+    container_name: valheim-server
+    user: "1000:1000"
+    ports:
+      - "2456:2456/udp"
+      - "2457:2457/udp"
+    environment:
+      STEAM_APP_ID: "896660"
+      GAME_EXECUTABLE: "valheim_server.x86_64"
+      GAME_ARGS: '-name "My server" -port 2456 -world "Dedicated" -password "secret"'
+    volumes:
+      - ./game:/home/steam/game
+      - ./save:/home/steam/.config/unity3d/IronGate/Valheim  # Valheim server config & worlds
